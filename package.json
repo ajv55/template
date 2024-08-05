@@ -1,6 +1,6 @@
 {
   "name": "template-genius",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "CLI tool to create a new project with a Next.js setup, including Stripe integration, NextAuth for authentication, Tailwind CSS for styling, TypeScript for type safety, and a ready-to-use landing page template.",
   "author": "Abel J. <abejevilla55@gmail.com>",
   "license": "MIT",
