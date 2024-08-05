@@ -29,7 +29,7 @@ const runCommand = (command, options = {}) => {
 
 // Create project directory
 if (!fs.existsSync(projectDir)) {
-  fs.mkdirSync(projectDir);
+  fs.mkdirSync(projectDir, { recursive: true });
 } else {
   console.error(`Directory ${projectName} already exists.`);
   process.exit(1);
@@ -37,11 +37,21 @@ if (!fs.existsSync(projectDir)) {
 
 // Copy template files to the new project directory
 try {
-  fs.cpSync(templateDir, projectDir, { recursive: true });
-  fs.cpSync(path.join(templateDir, '.env'), path.join(projectDir, 
-'.env'));
-  fs.cpSync(path.join(templateDir, '.env.local'), path.join(projectDir, 
-'.env.local'));
+  // Copy the entire template directory to the project directory
+  fs.cpSync(templateDir, projectDir, { recursive: true, filter: (src, dest) => {
+    if (src === dest) return false; // Avoid copying the directory into itself
+    return true;
+  }});
+  
+  // Optionally handle specific files like .env or .env.local
+  const envFiles = ['.env', '.env.local'];
+  envFiles.forEach(file => {
+    const srcFile = path.join(templateDir, file);
+    const destFile = path.join(projectDir, file);
+    if (fs.existsSync(srcFile)) {
+      fs.copyFileSync(srcFile, destFile);
+    }
+  });
 } catch (error) {
   console.error('Error copying template files:', error.message);
   process.exit(1);
@@ -58,8 +68,8 @@ runCommand('npx prisma generate');
 
 // Display success message
 console.log(`Project ${projectName} created successfully.`);
-console.log(`Navigate to the project directory and start the development 
-server:`);
+console.log(`Navigate to the project directory and start the development server:`);
 console.log(`cd ${projectName}`);
 console.log(`npm run dev`);
+
 
