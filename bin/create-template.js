@@ -79,13 +79,36 @@ try {
   process.exit(1);
 }
 
+// Verify the Prisma schema file exists in the correct path
+const prismaSchemaPath = path.join(projectDir, 'prisma', 'schema.prisma');
+if (!fs.existsSync(prismaSchemaPath)) {
+  console.error(`Prisma schema file not found at ${prismaSchemaPath}`);
+  process.exit(1);
+}
+
 // Change to the new project directory
 process.chdir(projectDir);
 
 // Install dependencies
+console.log('Installing dependencies...');
 runCommand('npm install');
 
-// Use npx to run Prisma generate
+// Check if Prisma is installed
+try {
+  execSync('npx prisma --version', { stdio: 'ignore' });
+} catch (error) {
+  console.error('Prisma CLI is not installed. Installing Prisma...');
+  runCommand('npm install @prisma/client prisma');
+}
+
+// Verify Prisma build file path (adjust this according to your Prisma setup)
+const prismaBuildPath = path.join(projectDir, 'node_modules', 'prisma', 'build', 'index.js');
+if (!fs.existsSync(prismaBuildPath)) {
+  console.error(`Prisma build file not found at ${prismaBuildPath}`);
+  process.exit(1);
+}
+
+// Run Prisma generate
 console.log('Running Prisma generate...');
 runCommand('npx prisma generate');
 
@@ -94,6 +117,7 @@ console.log(`Project ${projectName} created successfully.`);
 console.log(`Navigate to the project directory and start the development server:`);
 console.log(`cd ${projectName}`);
 console.log(`npm run dev`);
+
 
 
 
