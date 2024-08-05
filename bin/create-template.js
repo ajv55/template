@@ -46,7 +46,6 @@ if (!fs.existsSync(projectDir)) {
 
 // Copy template files to the new project directory
 try {
-  // Copy the entire template directory to the project directory
   fs.cpSync(templateDir, projectDir, { recursive: true, filter: (src) => {
     // Avoid copying the directory into itself
     return !src.startsWith(projectDir);
@@ -73,6 +72,7 @@ process.chdir(projectDir);
 runCommand('npm install');
 
 // Set up Prisma
+console.log('Running Prisma generate...');
 runCommand('npx prisma generate');
 
 // Display success message
@@ -80,6 +80,7 @@ console.log(`Project ${projectName} created successfully.`);
 console.log(`Navigate to the project directory and start the development server:`);
 console.log(`cd ${projectName}`);
 console.log(`npm run dev`);
+
 
 
 
