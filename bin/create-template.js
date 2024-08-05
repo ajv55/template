@@ -71,15 +71,19 @@ process.chdir(projectDir);
 // Install dependencies
 runCommand('npm install');
 
-// Set up Prisma
+// Use local Prisma binary to generate Prisma client
+const prismaBinary = path.resolve(__dirname, '..', 'node_modules', '.bin', 'prisma');
+
 console.log('Running Prisma generate...');
-runCommand('npx prisma generate');
+runCommand(`${prismaBinary} generate`);
 
 // Display success message
 console.log(`Project ${projectName} created successfully.`);
 console.log(`Navigate to the project directory and start the development server:`);
 console.log(`cd ${projectName}`);
 console.log(`npm run dev`);
+
+
 
 
 
