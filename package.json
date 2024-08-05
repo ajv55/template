@@ -7,11 +7,11 @@
   "private": false,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "node node_modules/prisma/build/index.js generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "setup": "prisma generate && prisma migrate dev && next dev",
-    "postinstall": "npx prisma generate || true"
+    "setup": "node node_modules/prisma/build/index.js generate && prisma migrate dev && next dev",
+    "postinstall": "node node_modules/prisma/build/index.js generate || true"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
