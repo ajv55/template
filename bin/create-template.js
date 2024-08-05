@@ -45,23 +45,14 @@ if (!fs.existsSync(projectDir)) {
 }
 
 // Copy template files to the new project directory
-const copyDirectory = (src, dest) => {
-  const entries = fs.readdirSync(src, { withFileTypes: true });
-  fs.mkdirSync(dest, { recursive: true });
-  for (let entry of entries) {
-    const srcPath = path.join(src, entry.name);
-    const destPath = path.join(dest, entry.name);
-    if (entry.isDirectory()) {
-      copyDirectory(srcPath, destPath);
-    } else {
-      fs.copyFileSync(srcPath, destPath);
-    }
-  }
-};
-
 try {
-  // Copy files, ensuring not to copy into itself
-  copyDirectory(templateDir, projectDir);
+  fs.cpSync(templateDir, projectDir, {
+    recursive: true,
+    filter: (src) => {
+      // Avoid copying the directory into itself
+      return !src.startsWith(projectDir);
+    }
+  });
 
   // Optionally handle specific files like .env or .env.local
   const envFiles = ['.env', '.env.local'];

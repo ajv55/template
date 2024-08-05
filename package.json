@@ -1,6 +1,6 @@
 {
   "name": "template-genius",
-  "version": "0.10.0",
+  "version": "0.12.0",
   "description": "CLI tool to create a new project with a Next.js setup, including Stripe integration, NextAuth for authentication, Tailwind CSS for styling, TypeScript for type safety, and a ready-to-use landing page template.",
   "author": "Abel J. <abejevilla55@gmail.com>",
   "license": "MIT",
@@ -24,6 +24,7 @@
     "bcrypt": "^5.1.1",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.3.21",
+    "fs-extra": "^11.2.0",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
     "next": "14.2.5",
@@ -36,6 +37,9 @@
     "resend": "^3.5.0",
     "stripe": "^16.6.0",
     "template-genius": "^0.1.0"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma"
   },
   "devDependencies": {
     "@types/node": "^20",
