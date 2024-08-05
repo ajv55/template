@@ -12,7 +12,8 @@ if (projectName === '--help' || projectName === '-h') {
   console.log('Usage: template-genius <project-name>');
   console.log('Creates a new project using the template.');
   console.log('Arguments:');
-  console.log('  <project-name>  The name of the project directory to create.');
+  console.log('  <project-name>  The name of the project directory to 
+create.');
   process.exit(0);
 }
 
@@ -86,7 +87,8 @@ process.chdir(projectDir);
 runCommand('npm install');
 
 // Use local Prisma binary to generate Prisma client
-const prismaBinary = path.resolve(projectDir, 'node_modules', '.bin', 'prisma');
+const prismaBinary = path.resolve(projectDir, 'node_modules', '.bin', 
+'prisma');
 
 if (fs.existsSync(prismaBinary)) {
   console.log('Running Prisma generate...');
@@ -98,14 +100,8 @@ if (fs.existsSync(prismaBinary)) {
 
 // Display success message
 console.log(`Project ${projectName} created successfully.`);
-console.log(`Navigate to the project directory and start the development server:`);
+console.log(`Navigate to the project directory and start the development 
+server:`);
 console.log(`cd ${projectName}`);
 console.log(`npm run dev`);
-
-
-
-
-
-
-
 
