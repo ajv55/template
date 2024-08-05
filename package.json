@@ -50,6 +50,6 @@
     "typescript": "^5"
   },
   "bin": {
-    "create-template": "./bin/create-template.js"
+    "template-genius": "./bin/create-template.js"
   }
 }
