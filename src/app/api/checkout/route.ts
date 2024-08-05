@@ -1,6 +1,6 @@
 // app/api/checkout/route.ts
 import { NextResponse } from 'next/server';
-import stripe from '@/app/lib/stripe'; // Adjust the import path
+import stripe from '../../lib/stripe'; // Adjust the import path
 
 export async function POST(request: Request) {
   const { items } = await request.json();
