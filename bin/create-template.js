@@ -45,11 +45,23 @@ if (!fs.existsSync(projectDir)) {
 }
 
 // Copy template files to the new project directory
+const copyDirectory = (src, dest) => {
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  fs.mkdirSync(dest, { recursive: true });
+  for (let entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      copyDirectory(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+};
+
 try {
-  fs.cpSync(templateDir, projectDir, { recursive: true, filter: (src) => {
-    // Avoid copying the directory into itself
-    return !src.startsWith(projectDir);
-  }});
+  // Copy files, ensuring not to copy into itself
+  copyDirectory(templateDir, projectDir);
 
   // Optionally handle specific files like .env or .env.local
   const envFiles = ['.env', '.env.local'];
@@ -72,7 +84,7 @@ process.chdir(projectDir);
 runCommand('npm install');
 
 // Use local Prisma binary to generate Prisma client
-const prismaBinary = path.resolve(__dirname, '..', 'node_modules', '.bin', 'prisma');
+const prismaBinary = path.resolve(process.cwd(), 'node_modules', '.bin', 'prisma');
 
 console.log('Running Prisma generate...');
 runCommand(`${prismaBinary} generate`);
@@ -82,6 +94,7 @@ console.log(`Project ${projectName} created successfully.`);
 console.log(`Navigate to the project directory and start the development server:`);
 console.log(`cd ${projectName}`);
 console.log(`npm run dev`);
+
 
 
 
