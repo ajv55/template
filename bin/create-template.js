@@ -2,7 +2,7 @@
 
 const { execSync } = require('child_process');
 const path = require('path');
-const fs = require('fs-extra'); // Using fs-extra for file operations
+const fs = require('fs-extra');
 
 // Get the project name from the command line arguments
 const projectName = process.argv[2];
@@ -85,23 +85,15 @@ process.chdir(projectDir);
 // Install dependencies
 runCommand('npm install');
 
-// Use local Prisma binary to generate Prisma client
-const prismaBinary = path.resolve(projectDir, 'node_modules', '.bin', 'prisma');
-
-if (fs.existsSync(prismaBinary)) {
-  console.log('Running Prisma generate...');
-  runCommand(`${prismaBinary} generate`);
-} else {
-  console.error('Prisma binary not found.');
-  process.exit(1);
-}
+// Use npx to run Prisma generate
+console.log('Running Prisma generate...');
+runCommand('npx prisma generate');
 
 // Display success message
 console.log(`Project ${projectName} created successfully.`);
 console.log(`Navigate to the project directory and start the development server:`);
 console.log(`cd ${projectName}`);
 console.log(`npm run dev`);
-
 
 
 
