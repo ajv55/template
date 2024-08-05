@@ -7,6 +7,15 @@ const fs = require('fs');
 // Get the project name from the command line arguments
 const projectName = process.argv[2];
 
+// Check if the argument is --help or -h and show help message if true
+if (projectName === '--help' || projectName === '-h') {
+  console.log('Usage: template-genius <project-name>');
+  console.log('Creates a new project using the template.');
+  console.log('Arguments:');
+  console.log('  <project-name>  The name of the project directory to create.');
+  process.exit(0);
+}
+
 if (!projectName) {
   console.error('Please provide a project name.');
   process.exit(1);
@@ -38,11 +47,11 @@ if (!fs.existsSync(projectDir)) {
 // Copy template files to the new project directory
 try {
   // Copy the entire template directory to the project directory
-  fs.cpSync(templateDir, projectDir, { recursive: true, filter: (src, dest) => {
-    if (src === dest) return false; // Avoid copying the directory into itself
-    return true;
+  fs.cpSync(templateDir, projectDir, { recursive: true, filter: (src) => {
+    // Avoid copying the directory into itself
+    return !src.startsWith(projectDir);
   }});
-  
+
   // Optionally handle specific files like .env or .env.local
   const envFiles = ['.env', '.env.local'];
   envFiles.forEach(file => {
@@ -71,5 +80,6 @@ console.log(`Project ${projectName} created successfully.`);
 console.log(`Navigate to the project directory and start the development server:`);
 console.log(`cd ${projectName}`);
 console.log(`npm run dev`);
+
 
 
