@@ -35,6 +35,7 @@ const CheckoutButton = () => {
     <div className='p-8 flex flex-col gap-4 justify-center items-center bg-indigo-300 w-full'>
         <h1 className="text-2xl text-white font-bold mb-4">Your Product</h1>
         <p className="text-lg text-gray-500 mb-6">Complete your purchase by clicking the button below:</p>
+        <p className='text-gray-500 font-bold'>Please make sure to add <strong className='text-red-500'>YOUR OWN API KEYS FOR STRIPE, NEXT AUTH, and your own MonogoDB string.</strong></p>
         <button
         onClick={handleCheckout}
         disabled={loading}

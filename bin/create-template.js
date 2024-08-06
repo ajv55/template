@@ -11,10 +11,8 @@ if (!projectName) {
   process.exit(1);
 }
 
+const templateDir = path.resolve(__dirname, '..'); // Assuming bin is one level down from template
 const projectDir = path.resolve(process.cwd(), projectName);
-
-// Adjust templateDir to be the root of the template project
-const templateDir = path.resolve(__dirname, '..');
 
 if (fs.existsSync(projectDir)) {
   console.error(`Directory ${projectName} already exists.`);
@@ -23,10 +21,10 @@ if (fs.existsSync(projectDir)) {
 
 fs.mkdirSync(projectDir, { recursive: true });
 
-// Copy the content from the template directory to the new project directory
 console.log(`Copying files from ${templateDir} to ${projectDir}`);
-fs.copySync(templateDir, projectDir, { overwrite: true });
-console.log('Files copied successfully.');
+
+// Copy the contents of the template directory to the new project directory
+fs.copySync(templateDir, projectDir, { filter: (src) => !src.includes(path.join(__dirname, '..', 'bin')) });
 
 process.chdir(projectDir);
 
@@ -41,7 +39,7 @@ try {
 
 console.log('Running Prisma generate...');
 
-// Define the Prisma schema path relative to the new project directory
+// Ensure the Prisma schema path is correct
 const prismaSchemaPath = path.join(projectDir, 'prisma', 'schema.prisma');
 
 if (!fs.existsSync(prismaSchemaPath)) {
@@ -57,10 +55,7 @@ try {
   process.exit(1);
 }
 
-console.log('Project setup completed.');
-console.log(`Navigate to your project directory using: cd ${projectName}`);
-console.log('Start your project with: npm run dev');
-console.log('Happy coding!');
+console.log('Project setup completed. Go to your project and use `npm run dev` to start it. Happy coding!');
 
 
 
